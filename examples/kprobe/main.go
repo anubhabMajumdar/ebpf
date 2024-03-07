@@ -12,14 +12,15 @@ import (
 	"github.com/cilium/ebpf/rlimit"
 )
 
-//go:generate go run github.com/cilium/ebpf/cmd/bpf2go bpf kprobe.c -- -I../headers
+//go:generate go run github.com/cilium/ebpf/cmd/bpf2go@master -cc clang-14 -cflags "-g -O2 -Wall -D__TARGET_ARCH_amd64 -Wall" bpf kprobe.c -- -I../headers
 
 const mapKey uint32 = 0
 
 func main() {
 
 	// Name of the kernel function to trace.
-	fn := "sys_execve"
+	// fn := "sys_execve"
+	fn := "tcp_connect"
 
 	// Allow the current process to lock memory for eBPF resources.
 	if err := rlimit.RemoveMemlock(); err != nil {

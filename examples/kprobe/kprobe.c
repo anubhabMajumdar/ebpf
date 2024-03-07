@@ -11,8 +11,9 @@ struct bpf_map_def SEC("maps") kprobe_map = {
 	.max_entries = 1,
 };
 
-SEC("kprobe/sys_execve")
+SEC("kprobe/tcp_connect")
 int kprobe_execve() {
+	bpf_printk("Hello, kprobe!\n");
 	u32 key     = 0;
 	u64 initval = 1, *valp;
 
